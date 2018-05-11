@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" 
+                    "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+
+   <constant name="struts.objectFactory" value="spring"/>
+
+  <!-- 登录测试1 -->
+   <package name="default" extends="struts-default" namespace="/">
+     
+        <action name="loginAction_*" class="Spr_loginAction" method="{1}">
+             <result name="success">index.jsp</result>
+             <result name="relogin">views/login.jsp</result>
+        </action>
+   
+   </package>
+     
+</struts>    

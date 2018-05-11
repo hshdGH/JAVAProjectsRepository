@@ -1,0 +1,4 @@
+一、Spring Struts Hibernate整合
+1、引入Spring架包；
+2、引入Hibernate架包；
+3、引入Struts架包；
