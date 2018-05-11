@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/tx  
+	    http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		http://www.springframework.org/schema/aop  
+	    http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+         ">
+       
+  <import resource="applicationContext.xml"/>
+  
+   <!-- 被代理的对象 -->
+    <bean id="testService" class="cn.hsh.advice.TestInterfaceImpl">
+         <property name="name" value="世豪"/>
+    </bean>
+
+    <!-- 前置通知 -->
+    <bean id="myBeforeAdvice" class="cn.hsh.advice.MyMethodBeforeAdvice"/>
+    <!-- 后置通知 -->
+    <bean id="myAfterAdvice" class="cn.hsh.advice.MyAfterReturningAdvice"/>
+    <!-- 异常通知 -->
+    <bean id="myThrowAdvice" class="cn.hsh.advice.MyThrowAdvice"/>
+    <!-- 环绕通知 -->
+    <bean id="myMethodInterceptor" class="cn.hsh.advice.MyMethodInterceptor"/>
+    
+    <!-- 通知过滤功能，指定 某通知 只对 指定方法的调用 生效 -->
+    <bean id="BeforeAdviceTest" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+          <property name="advice" ref="myBeforeAdvice"/>
+          <!-- 指定生效的方法 -->
+          <property name="mappedNames">
+             <list>
+                <value>sayHello</value>
+             </list>
+          </property>
+    </bean>
+    
+    <!-- 代理对象 -->
+    <bean id="pfb" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <!-- 代理的接口集 -->
+         <property name="proxyInterfaces">
+            <list>
+               <value>cn.hsh.advice.TestInterface</value>
+               <value>cn.hsh.advice.TestInterface2</value>
+            </list>
+         </property>
+         <!-- 把通知织入到代理对象 -->
+         <property name="interceptorNames">
+            <list>
+               <value>BeforeAdviceTest</value>
+               <value>myAfterAdvice</value>
+               <value>myThrowAdvice</value>
+               <value>myMethodInterceptor</value>
+            </list>
+         </property>
+         <!-- 配置被代理对象 -->
+         <property name="target" ref="testService"/>
+    </bean>
+         
+
+</beans>

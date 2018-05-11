@@ -1,0 +1,5 @@
+一、Aop
+1、在spring的aop中，通过代理对象实现aop的话，获取的proxyFactoryBean是什么类型？
+① 返回的是一个代理对象； 
+② 如果目标对象实现了接口，那么spring使用的是jdk动态代理技术；
+③ 如果目标对象没有实现接口，则spring使用COLIB技术；
